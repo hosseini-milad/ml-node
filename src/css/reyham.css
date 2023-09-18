@@ -1,0 +1,321 @@
+:root{
+	--main-color:#002A54;
+	--main-dark:rgb(48, 127, 226);
+    
+}
+html{
+    scroll-behavior: smooth;
+}
+.reyhamForm{
+    width: 70%;
+}
+
+.errorSmall{
+    color:brown;
+    float:right;
+}
+.hidden{
+    display: none;
+}
+.lang{
+    display: grid;
+
+}
+.lang li{
+    cursor: pointer;
+    color:#fff;
+}
+.filterIcon{
+    position: absolute;
+    bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--blue);
+    right: 20px;
+    cursor: pointer;
+}
+.rev{
+    flex-direction: row-reverse;
+}
+
+.form-field-fiin .icon-edit {
+    position: absolute;
+    bottom: 18px;
+    right: -30px;
+    cursor: pointer;
+}
+.form-field-fiin:hover {
+    color:var(--blue)
+}
+.email-form-fiin{
+    margin-top: 35px;
+
+}
+.btn-fiin{
+    min-width: 180px;
+}
+.btn-email {
+    background: var(--main-dark);
+    border: 1px solid var(--main-dark);
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fff;
+    padding: 15px;
+    transition: 0.3s;
+    width: 90%;
+}
+
+.btn-email:hover {
+    background-color: transparent;
+    color: var(--main-dark);
+}
+.change-email{
+    display: flex;
+    width: 100%;
+}
+/*Board*/
+.toDoHolder{
+    margin:8px;
+    display: flex;
+}
+.columnHolder{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+}
+.taskList{
+    flex-direction: column;
+    border:1px solid var(--blue);
+    border-radius: 2px;
+    padding: 18px 8px;
+    margin:8px;
+    flex-grow: 1;
+    
+}
+.taskPlace{
+    border:1px solid gray;
+    border-radius: 2px;
+    padding: 8px;
+    background-color: #fff;
+    margin-bottom: 8px;
+    display: flex;
+}
+.dragTask{
+    background-color: lightgreen;
+}
+.dragCol{
+    background-color: lightblue;
+}
+.handler{
+    background-color: var(--blue);
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+    border-radius: 4px;
+}
+.acceptBtn{
+    background-color: green;
+    border-color: green;
+}
+.acceptBtn:hover{
+    color: green;
+}
+.reyhamBtn{
+    flex-direction: row-reverse;
+}
+.reyhamUpload{
+    border:none;
+    padding: 0;
+}
+.reyhamUpload .btn-cancel:hover{
+    color:#fff;
+}
+.reverseHover:hover{
+    background-color: transparent !important;
+}
+.removeItem{
+    color: red;
+    position: absolute;
+    right:30px;
+    top:18px;
+    width:30px;
+    font-size: 20px;
+}
+.planOption{
+    display: flex;
+}
+.radioPlan {
+    margin-right: 15px;
+}
+.planOption .accordion-item{
+    width: 100%;
+}
+.disable-fiin{
+    background-color: silver;
+    border-color: gray;
+}
+.disable-fiin:hover{
+    color: gray;
+}
+.reyhamSelect{
+    border: 1px solid #E7E7E8;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    padding: 14px 18px;
+    width: 50%;
+    margin: 20px auto
+}
+.registerSelect{
+    width: 100%;
+    margin:0;
+    min-height: 50px;
+}
+.miniFont{
+    font-size: 10px;
+    position: absolute;
+    margin:5px;
+}
+.titles{
+    display: grid;
+}
+/*Steps Client*/
+.tabStepHolder{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.tabStep{
+    background-color: #f5f5f5;
+    border-bottom: 3px solid var(--blue);
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    display: grid;
+    font-size: 15px;
+    margin: auto .5%;
+    padding: 20px 10px;
+    text-align: center;
+    white-space: nowrap;
+    width: 120px;
+}
+.tabStepActive{
+    background-color: var(--blue);
+    color:#f5f5f5
+}
+.tabStepDeactive{
+    background-color: #eee;
+    border-bottom-color: gray;
+}
+.tabStep span{
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+}
+.step-placeHolder{
+    margin:50px auto;
+    width: 70%;
+}
+.deact-fiin{
+    background: gray;
+    border: 1px solid gray;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #fff;
+    padding: 14px 60px;
+    transition: 0.3s;
+}
+.DatePicker{
+    width:100%;
+}
+.DatePicker input{
+    text-align: left;
+}
+.DatePicker button{
+    direction: ltr;
+    position: relative;
+}
+.form-fiin textarea {
+    border: 1px solid #E7E7E8;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 14px 18px;
+    width: 100%;
+  }
+  .home-title{
+    width: 100%;
+  }
+  .home-title:before{
+    display: none;
+  }
+  .home-hero p{
+    padding-left: 15px;
+  }
+
+.reyhamUploadBtn{
+    position: absolute;
+    right: 20px;
+    top:20px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 120px;
+}
+.account-head ul{
+z-index: 20;
+}
+.reyhamUploadBtn .icon-upload{
+    font-size: 20px;
+}
+.upFile{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.upFile i{
+    font-size: 11px;
+    margin-right: 5px;
+    overflow: hidden;
+    white-space: nowrap; /* Don't forget this one */
+    text-overflow: ellipsis;
+    width: 70px;
+}
+
+@media only screen and (max-width:1200px){
+    .table-fiin table {
+        max-width: 1300px;
+        width: 100%;
+      }
+}
+@media only screen and (max-width:992px){
+    .header-logo{
+        margin:auto;
+    }
+    .main-menu > li:hover .sub-menu {
+        display: block;
+    }
+    
+}
+@media only screen and (max-width: 768px) {
+    .account-head:hover ul {
+        display: block;
+    }
+    .accordion-item .accordion-title{
+        padding: 20px 20px 50px 20px;
+    }
+    .show-more{
+        position: relative;
+        right: auto;
+    }
+    .show-more .btn-fiin{
+        width: 100%;
+    }
+    .step-placeHolder{
+        width: 100%;
+    }
+    .footer-form-fiin {
+    display: grid;
+    row-gap: 10px;
+    margin-top: 46px;
+    }
+    .reyhamUpload {width: fit-content;}
+}

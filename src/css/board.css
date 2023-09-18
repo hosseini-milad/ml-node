@@ -1,0 +1,194 @@
+.container-fluid{
+    --bs-gutter-x: 1.5rem;
+--bs-gutter-y: 0;
+width: 100%;
+padding-right: calc(var(--bs-gutter-x) * .5);
+padding-left: calc(var(--bs-gutter-x) * .5);
+margin-right: auto;
+margin-left: auto;
+}
+.boards {
+    font-family: sans-serif;
+    font-weight: 1em;
+    display: block;
+    overflow: auto;
+    width: 100%;
+    padding: 40px 20px 30px;
+  }
+  .board-item:first-child .board-title {
+    color: #5382ff;
+  }
+  .board-item:first-child .board-title::before {
+    background-color: #5382ff;
+  }
+  .board-item:nth-child(2) .board-title {
+    color: #b543eb;
+  }
+  .board-item:nth-child(2) .board-title::before {
+    background-color: #b543eb;
+  }
+  .board-item:nth-child(3) .board-title {
+    color: #63c353;
+  }
+  .board-item:nth-child(3) .board-title::before {
+    background-color: #63c353;
+  }
+  .board-item:nth-child(4) .board-title {
+    color: #ff9901;
+  }
+  .board-item:nth-child(4) .board-title::before {
+    background-color: #ff9901;
+  }
+  .board-title::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #999;
+    margin-right: 10px;
+  }
+  .board-list {
+    width: 1880px;
+    display: flex;
+  }
+  .board-item {
+    width: 300px;
+    min-width: 300px;
+    min-height: 700px;
+    margin: 0px;
+    padding: 15px;
+    padding-bottom: 2rem;
+    background-color: #f9f9f9;
+    margin-right: 15px;
+    border-radius: 0.4rem;
+  }
+  .board-title {
+    background-color: #fff;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+    color: #999;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .board-item:first-child .board-title {
+    color: #5382ff;
+  }
+  .boards ul.board-list-item {
+    height: 100%;
+    flex-direction: column;
+    padding-left: 0;
+    list-style: none;
+    flex-grow: 1;
+  }
+  li.board-task {
+    display: block;
+    margin: 0px;
+      margin-top: 0px;
+    padding: 15px;
+    border-radius: 8px;
+    list-style-type: none;
+    font-size: 0.8em;
+    background-color: #fff;
+    color: #444;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 0.8em;
+    cursor: pointer;
+    position: relative;
+    font-weight: 200;
+    padding-bottom: 50px;
+  }
+  .task-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--blue);
+    position: relative;
+    pointer-events: none;
+  }
+  .task-title::before {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 100%;
+    background-color: var(--blue);
+    position: absolute;
+    top: 0;
+    left: -15px;
+    border-radius: 0 2px 2px 0;
+    transition: 0.3s;
+  }
+  .task-date {
+    color: var(--light-gray);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    pointer-events: none;
+  }
+  .task-meta {
+    margin-top: 30px;
+    font-size: 12px;
+    padding-left: 0;
+    list-style: none;
+  }
+  .task-meta span{
+    font-size: 14px;
+  font-weight: bold;
+  }
+  .task-meta a {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    color: #666;
+    transition: 0.3s;
+  }
+  .task-meta a:hover {
+    color: var(--blue);
+  }
+  .task-status {
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    bottom: 15px;
+    color: #fff;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 80px;
+    text-align: center;
+    z-index: 10;
+  }
+  .task-status:hover {
+    text-overflow:initial;
+    border-color: red;
+  }
+  .task-handler {
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 100px;
+    display: grid;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .status-active {
+    border: 1px solid #80b780;
+    color: #80b780;
+  }
+  .status-deactive {
+    border: 1px solid #d96b6b;
+    color: #d96b6b;
+  }
+  .status-wating {
+    border: 1px solid #c4c44a;
+    color: #c4c44a;
+  }
