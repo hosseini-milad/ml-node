@@ -1,77 +1,84 @@
 const express = require('express');
 const router = express.Router()
-const { default: fetch } = require("node-fetch");
-const brain = require("brain.js")
 const fs = require("fs");
+const mime = require('mime');
+const multer = require('multer');
 const { parse } = require("csv-parse");
-const normalize = require('array-normalize')
+const authApi = require('./authApi');
+const modelApi = require('./modelApi');
+const deepApi = require('./mlApi');
+const csv = require("fast-csv")
 
-const readline = require("readline");
+var storage = multer.diskStorage(
+  {
+      destination: '/dataset/',
+      filename: function ( req, file, cb ) {
+          cb( null, "Deep"+ '-' + Date.now()+ '-'+file.originalname);
+      }
+  }
+);
+const uploadImg = multer({ storage: storage ,
+  limits: { fileSize: "5mb" }})
 
-router.get('/train-model', async (req,res)=>{
-    try{
-      const stream = fs.createReadStream("./dataset/Firewall.csv");
-      const rl = readline.createInterface({ input: stream });
-      let data = [];
 
-      rl.on("line", (row) => {
-        data.push(row.split(","));
-      });
-      
-      rl.on("close", async () => {
-        const trainResult = await trainFunction(data)
-        res.status(200).json({result:trainResult});
-      });
-
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/test-data', async (req,res)=>{
-  const testData = req.body.testData
-  const config = {
-    binaryThresh: 0.5, // ¯\_(ツ)_/¯
-    hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
-    activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
-  };
-
-  const net = new brain.NeuralNetwork(config);
+router.use('/auth', authApi)
+router.use('/model', modelApi)
+router.use('/deep', deepApi)
+router.post('/upload',uploadImg.single('upload'),async (req,res)=>{
   try{
-    const networkState = JSON.parse(fs.readFileSync("./models/network_state.json", "utf-8"));
-    net.fromJSON(networkState);
-    const testResult= net.run(normalize(testData));
-    res.status(200).json({testResult: testResult})
+    var userFolder = req.body.userFolder
+      //console.log("upload Start")
+      var matches = await req.body.data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
+      
+      response = {};
+      //console.log(matches)
+      if (matches.length !== 3) {
+      return new Error('Invalid input string');
+      }
+      response.type = matches[1];
+      response.data = Buffer.from(matches[2], 'base64');
+      //console.log(matches[1])
+      let decodedImg = response;
+      let imageBuffer = decodedImg.data;
+      let type = decodedImg.type;
+      let extension = mime.extension(type);
+      let fileName = `Deep-${Date.now().toString()+"-"+req.body.imgName}.${extension}`;
+      //console.log(fileName)
+      try {
+      fs.writeFileSync(`./dataset/${userFolder}/` + fileName, imageBuffer, 'utf8');
+      
+      //console.log("write")
+      return res.send({message:"upload Done",
+          url:`/dataset/${userFolder}/`+fileName});
+      } catch (e) {
+          res.send({"status":"failed",error:e});
+      }
+      //res.json({message:"upload Done"})
   }
   catch(error){
       res.status(500).json({message: error.message})
   }
 })
-const trainFunction=async(row)=>{
-  const config = {
-    binaryThresh: 0.5, // ¯\_(ツ)_/¯
-    hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
-    activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
-  };
 
-  const net = new brain.NeuralNetwork(config);
-  net.train(
-    row.map((data,i)=>(
-      {
-        output: [(data.shift()==="BENIGN"?0:1)],
-        input: normalize(data.map(str => {
-          return parseFloat(str);
-        }))
-      }
-    )) ,{
-      iterations: 100
-    }
-    ); 
- 
-    const networkState = net.toJSON();
-fs.writeFileSync("./models/network_state.json",  JSON.stringify(networkState), "utf-8");
+router.post('/upload-csv',async (req,res)=>{
+  var csvData = {}
+    var CSV_STRING = req.body
+    csv.fromString(CSV_STRING, {
+        headers: ["count", "value"],
+        ignoreEmpty: true,
+    })
+        .on("data", function (data) {
+            csvData[data.value] = data
+        })
+        .on("end", function () {
+            console.log(csvData)
+            //make call to database
+            res.send("Done")
+        })
+})
 
-  return({message:"train completed!"})
-}
+router.get('/test', async (req,res)=>{
+  res.status(200).json({output: parseFloat("192.168.1.1")})
+})
 
 module.exports = router;
