@@ -36,7 +36,7 @@ function Board(props){
     const [taskState,setTaskState] = useState()
     //const initalData = 
     const [boardArray,setBoardArray] = useState()
-    const token=cookies.get('fiin-login')
+    const token=cookies.get('deep-login')
     useEffect(()=>{
         setTaskState()
         const postOptions={

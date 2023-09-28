@@ -13,7 +13,7 @@ function Profile(){
     const [changeEmail,setChangeEmail] = useState()
     const [email,setEmail] = useState()
     const [error,setError] = useState({message:'',color:"brown"})
-    const token=cookies.get('fiin-login')
+    const token=cookies.get('deep-login')
     useEffect(()=>{
         const postOptions={
             method:'post',
@@ -36,7 +36,7 @@ function Profile(){
     },[])
     
     const saveData=()=>{
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,
@@ -64,7 +64,7 @@ function Profile(){
         })
     }
     const changeEmailFunction=()=>{
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,
@@ -95,95 +95,16 @@ function Profile(){
     console.log(tasks&&tasks.step)
     return(
         <div className="container">
-        <Breadcrumb title={"Dados do Profile"}/>
+        <Breadcrumb title={"Edit Profile"}/>
         
         <div className="section-fiin dados-do-consultor">
             <div className="row justify-content-center">
                 <div className="col-lg-8">
                     <div className="form-fiin form-box-style">
                         <div className="section-head">
-                            <h1 className="section-title">Dados do utilizador <span>{users?users.access:''}</span></h1>
-                            {users&&users.access==="agency"?
-                            <><p>Dados do parceiro</p><hr/></>:''}
+                            <h1 className="section-title">Edit Profile </h1>
+                            
                         </div>
-                        {/*Comercial Profile*/}
-                        {users&&users.access==="agency"?<><div className="row">
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="Nome-Comercial">Nome Comercial</label>
-                                    <input type="text" name="Nome-Comercial" id="Nome-Comercial" value={users&&users.nameCompany}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{nameCompany:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="Firma">Firma</label>
-                                    <input type="text" name="Firma" id="Firma" value={users&&users.firma}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{firma:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="nif">NIF Comercial</label>
-                                    <input type="text" name="nif" id="nif" value={users&&users.nifCompany}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{nifCompany:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="Morada">Morada</label>
-                                    <input type="text" name="Morada" id="Morada" value={users&&users.morada}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{morada:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="telefoneCompany">Telefone Comercial</label>
-                                    <input type="tel" name="telefoneCompany" id="telefoneCompany" value={users&&users.phoneCompany}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{phoneCompany:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="emailCompany">E-main Comercial</label>
-                                    <input type="email" name="emailCompany" id="emailCompany" value={users&&users.emailCompany}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{emailCompany:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-field-fiin">
-                                    <label htmlFor="IBAN">IBAN</label>
-                                    <input type="text" name="IBAN" id="IBAN" value={users&&users.IBANCompany}
-                                    onChange={(e)=>setUsers(data => ({
-                                        ...data,
-                                        ...{IBANCompany:e.target.value}
-                                      }))}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="section-head">
-                            <p >Administrador da parceria</p>
-                            <hr/>
-                        </div></>:<></>}
-                        {/*Individual Profile*/}
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-field-fiin">
@@ -198,7 +119,7 @@ function Profile(){
                             </div>
                             <div className="col-md-6">
                                 <div className="form-field-fiin">
-                                    <label htmlFor="last-name">Apelido</label>
+                                    <label htmlFor="last-name">Sir Name</label>
                                     <input type="text" name="lastname" id="last-name" 
                                     defaultValue={users&&users.sName}
                                     onChange={(e)=>setUsers(data => ({
@@ -209,12 +130,12 @@ function Profile(){
                             </div>
                             <div className="col-md-6">
                                 <div className="form-field-fiin">
-                                    <label htmlFor="nif">NIF</label>
+                                    <label htmlFor="nif">Meli Code</label>
                                     <input type="text" name="nif" id="nif" 
                                     defaultValue={users&&users.nif}
                                     onChange={(e)=>setUsers(data => ({
                                         ...data,
-                                        ...{nif:e.target.value}
+                                        ...{meliCode:e.target.value}
                                       }))}/>
                                 </div>
                             </div>
@@ -228,24 +149,9 @@ function Profile(){
 
                                 </div>
                             </div>
-                            {changeEmail?<div className="change-email col-md-12" >
-                                <div className="col-md-6">
-                                  <div className="form-field-fiin">
-                                    <label htmlFor="email">new E-mail</label>
-                                    <input type="email" name="email" id="email" 
-                                    defaultValue={email}
-                                    onChange={(e)=>setEmail(e.target.value)}/>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="email-form-fiin">
-                                    <button type="submit" className="btn-email" name="submit"
-                                    onClick={changeEmailFunction}>Change Email</button>
-                                </div>
-                            </div></div>:<div className="change-email"></div>}
                             <div className="col-md-6">
                                 <div className="form-field-fiin">
-                                    <label htmlFor="telefone">Telefone</label>
+                                    <label htmlFor="telefone">Phone</label>
                                     <input type="tel" name="telefone" id="telefone" 
                                     defaultValue={users&&users.phone}
                                     onChange={(e)=>setUsers(data => ({
@@ -256,7 +162,7 @@ function Profile(){
                             </div>
                             <div className="col-md-6">
                                 <div className="form-field-fiin">
-                                    <label htmlFor="active">Ativa</label>
+                                    <label htmlFor="active">Active</label>
                                     <Switch onChange={(e)=>setUsers(data => ({
                                         ...data,
                                         ...{active:e?"true":"false"}

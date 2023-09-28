@@ -29,16 +29,15 @@ function Login(props){
             else{
                 const accessLevel = result.access
                 const cookies = new Cookies();
-                cookies.set('fiin-login', {
+                cookies.set('deep-login', {
                     userId:result._id,
                     access:result.access,
-                    level:accessLevel==="manager"?10:accessLevel==="agency"?5:
-                    accessLevel==="agent"?4:accessLevel==="customer"?2:1,
+                    level:accessLevel==="manager"?10:accessLevel==="seo"?5:
+                    accessLevel==="tester"?4:accessLevel==="customer"?2:1,
                     name:result.cName+" "+result.sName,
                     date:result.date,
                     token:result.token,
-                    username:accessLevel==="agent"?(result.cName+" "+result.sName):
-                    accessLevel==="agency"?result.nameCompany:result.email
+                    username:result.cName+" "+result.sName
                 }, { path: '/' });
                 window.location.reload()
             }
@@ -85,9 +84,9 @@ function Login(props){
                                 <p>{errortrans.LoginSubTitle[lang]}</p>
                             </div>
                             <div className="form-field-fiin">
-                                <label htmlFor="first-name">{errortrans.email[lang]}</label>
+                                <label htmlFor="first-name">{errortrans.phone[lang]}</label>
                                 <input type="text" name="firstname" id="username" 
-                                placeholder={errortrans.email[lang]}
+                                placeholder={errortrans.phone[lang]}
                                 value={loginInfo.username}
                                 onChange={(e)=>setLoginInfo(data => ({
                                     ...data,

@@ -1,9 +1,9 @@
 const env={
-    //siteApi:'http://localhost:4090/api',
-    siteApi:'https://fiinadmin.deleves.com/api',
+    siteApi:'http://localhost:4099/api',
+    //siteApi:'https://fiinadmin.deleves.com/api',
     
-    //siteApiUrl:'http://localhost:4090',
-    siteApiUrl:'https://fiinadmin.deleves.com',
+    siteApiUrl:'http://localhost:4099',
+    //siteApiUrl:'https://fiinadmin.deleves.com',
 
     columnOrder:['lead','informations','fiin','property','seguros',
         'escritura','commissions','suspended'],

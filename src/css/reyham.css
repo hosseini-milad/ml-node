@@ -73,6 +73,21 @@ html{
     display: flex;
     width: 100%;
 }
+.inputTest{
+    width: 100%;
+  border: 1px solid var(--blue);
+  border-radius: 3px;
+  box-shadow: 2px 2px silver;
+  padding: 5px 10px;
+}
+.dataHolder{
+    max-width: 500px;
+    overflow: hidden;
+    white-space: nowrap; /* Don't forget this one */
+    text-overflow: ellipsis;
+}
+
+
 /*Board*/
 .toDoHolder{
     margin:8px;

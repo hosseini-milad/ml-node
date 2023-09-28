@@ -44,7 +44,7 @@ const Footer = (props)=>{
         </div>
         <div className="copyright">
             <div className="container">
-                <p>Copyright 2019.Fiin  Allrights Reserved.</p>
+                <p>Copyright 2019.SEPEHR  Allrights Reserved.</p>
             </div>
         </div>
     </footer>
