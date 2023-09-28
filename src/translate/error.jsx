@@ -1,5 +1,5 @@
 const errortrans ={
-    defaultLang:"portuguese",
+    defaultLang:"english",
     defaultDir:"ltr",
     //Login Page
     signBtn:{
@@ -18,14 +18,19 @@ const errortrans ={
         persian: "صفحه ورود"
     },
     LoginSubTitle:{
-        english: "Login-Customer/Login-Agent/Login-Partner",
-        portuguese: "Login-Cliente/Login-Agente/Login-Parceiro",
-        persian: "ورود - مشتری / ورود - عامل / ورود - شریک"
+        english: "Login",
+        portuguese: "Login",
+        persian: "ورود"
     },
     email:{
         english: "Email",
         portuguese: "Email",
         persian: "آدرس ایمیل"
+    },
+    phone:{
+        english: "Phone",
+        portuguese: "Mobile",
+        persian: "موبایل"
     },
     password:{
         english: "Password",
@@ -33,13 +38,13 @@ const errortrans ={
         persian: "رمز عبور"
     },
     welcome:{
-        english: "Welcome to Finn.",
-        portuguese: "Bem-vindo à Fiin.",
-        persian: "به فین خوش آمدید"
+        english: "Welcome to Deep Api.",
+        portuguese: "Bem-vindo à Deep.",
+        persian: "به سپهرابر خوش آمدید"
     },
     welcomeSubTitle:{
-        english: "Welcome to Fiin! Please enter your login information to access your credits and insurance.",
-        portuguese: "Seja bem-vindo à Fiin! Por favor insira as suas informações de login, para ter acesso aos seus créditos e seguros.",
+        english: "Welcome to Deep Api! Please enter your login information to access your Smart API.",
+        portuguese: "Seja bem-vindo à Deep Api! Por favor insira as suas informações de login, para ter acesso aos seus créditos e seguros.",
         persian: "به فین خوش آمدید! لطفا اطلاعات ورود خود را برای دسترسی به اعتبار و بیمه خود وارد کنید."
     },
 

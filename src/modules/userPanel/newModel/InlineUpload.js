@@ -1,5 +1,5 @@
 import { useState } from "react";
-import env from "../../env";
+import env from "../../../env";
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
@@ -18,13 +18,14 @@ function InlineUpload(props){
     const onFileRecieve= async(event)=>{
         const uploadFile = event.target.files[0]
         const tempfile = await resizeFile(uploadFile);
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('Deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json'},
-            body:JSON.stringify({data:tempfile,imgName:uploadFile.name.split('.')[0]})
+            body:JSON.stringify({data:tempfile,userFolder:"milad",
+                imgName:uploadFile.name.split('.')[0]})
           }
-          //console.log(postOptions)
+        console.log(postOptions)
         fetch(env.siteApi + "/upload",postOptions)
         .then(res => res.json())
         .then(
@@ -44,7 +45,7 @@ function InlineUpload(props){
     return(
         <div className="show-more list-item reyhamUpload">
              {props.upFile?<a href={env.siteApiUrl+props.upFile} className="">
-             <i style={{marginRight:"6px"}}>{props.upFile.split('-')[2]}</i>
+             <i style={{marginRight:"6px"}}>{"props.upFile.split('-')[2]"}</i>
                 <span className="icon-upload"></span></a>:<>
             <label htmlFor="files" className="btn-cancel">
                 <span className="icon-upload"></span> Upload PDF</label>

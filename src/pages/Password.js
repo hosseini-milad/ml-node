@@ -9,7 +9,7 @@ function Password(){
     const [showPass,setShowPass] = useState()
     const [error,setError] = useState({message:'',color:"brown"})
     const changePass=()=>{
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,

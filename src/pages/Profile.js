@@ -13,7 +13,7 @@ function Profile(){
     const [changeEmail,setChangeEmail] = useState()
     const [email,setEmail] = useState()
     const [error,setError] = useState({message:'',color:"brown"})
-    const token=cookies.get('fiin-login')
+    const token=cookies.get('deep-login')
     useEffect(()=>{
         const postOptions={
             method:'post',
@@ -36,7 +36,7 @@ function Profile(){
     },[])
     
     const saveData=()=>{
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,
@@ -64,7 +64,7 @@ function Profile(){
         })
     }
     const changeEmailFunction=()=>{
-        const token=cookies.get('fiin-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,

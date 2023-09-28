@@ -4,7 +4,7 @@ import ClientBoard from "../modules/Board/ClientBoard";
 const cookies = new Cookies();
 
 function Dashboard(){
-    const token=cookies.get('fiin-login')
+    const token=cookies.get('deep-login')
     return(
         <main className="container-fluid">
             <div className="boards">

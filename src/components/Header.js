@@ -6,10 +6,10 @@ import errortrans from "../translate/error";
 const Header = (props)=>{
     const cookies = new Cookies();
     const [convas,setConvas] = useState(0)
-    const token=cookies.get('fiin-login');
+    const token=cookies.get('deep-login');
     const lang = props.lang?props.lang.lang:errortrans.defaultLang;
     const logOff=()=>{
-       cookies.remove('fiin-login',{ path: '/' });
+       cookies.remove('deep-login',{ path: '/' });
        setTimeout(()=>(document.location.reload(),500))
     }
     return(
@@ -24,7 +24,10 @@ const Header = (props)=>{
                     <span className="menu-close" onClick={()=>setConvas(0)}>
                         <span className="icon-close"></span></span>
                     <ul className="main-menu">
-                        {token.level<3?<li><a href="/client/steps">Fill Data</a></li>:<></>}
+                        {token.level<3?<>
+                            <li><a href="/user/models">Models</a></li>
+                            <li><a href="/user/new-model">New Models</a></li>
+                            </>:<></>}
                         {token.level===2?<>
                         <li><a href="/partner/register">Add Partner</a></li>
                         <li><a href="/client/plans">Select Plan</a></li>
