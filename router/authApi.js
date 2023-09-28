@@ -44,7 +44,7 @@ router.post('/login',jsonParser, async (req,res)=>{
           const token = jwt.sign(
             { user_id: user._id, username },
             process.env.TOKEN_KEY,
-            {expiresIn: "2h",}
+            {expiresIn: "2h",} 
           );
           user.token = token;
           res.status(200).json(user);
@@ -156,5 +156,61 @@ router.post('/find-users',auth,jsonParser, async (req,res)=>{
       res.status(500).json({message: error.message})
   }
 })
+router.post('/find-user-admin',auth,jsonParser, async (req,res)=>{
+  try {
+        const userOwner = await User.findOne({_id:req.headers["userid"]});
+        const userData = await User.findOne({_id:req.body.userId});
+        /*if(userData&&userData.access==="customer")
+          await User.updateOne({_id:req.body.userId},{$set:{active:"true"}});*/
+        res.status(200).json({user:userData,message:"User Data"})
+      } 
+  catch(error){
+      res.status(500).json({message: error.message})
+  }
+})
+router.post('/active-user',jsonParser, async (req,res)=>{
+
+  try {
+        const userData = await User.findOne({otp:req.body.otp});
+        if(userData){
+          await User.updateOne({otp:req.body.otp},
+            {$set:{active:"true",otp:""}});
+          res.status(200).json({user:userData,message:"User Activated"})
+          }
+        else{
+          res.status(500).json({error:"Expired OTP"})
+        }
+      } 
+  catch(error){
+      res.status(500).json({message: error.message})
+  }
+})
+router.post('/change-user',auth,jsonParser, async (req,res)=>{
+  try {
+      const data = {
+        username: req.body.username,
+        cName: req.body.cName,
+        sName:req.body.sName,
+        phone:req.body.phone,
+        email:req.body.email,
+        meliCode:req.body.meliCode,
+        active:req.body.active,
+        date: Date.now()
+      }
+      // Validate if user exist in our database
+      const userOwner = await User.updateOne({_id:ObjectID(req.body._id)},
+        {$set:data});
+      //console.log(await bcrypt.compare(userOwner.password, data.oldPass))
+      
+      res.status(200).json({user:userOwner,message:"User Data Changed."})
+      
+      } 
+  catch(error){
+    var errorTemp=error.message.includes("duplicate")?
+      "duplicate Value":error.message
+      res.status(500).json({error: errorTemp})
+  }
+})
+
 
 module.exports = router;

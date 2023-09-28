@@ -7,6 +7,7 @@ const { parse } = require("csv-parse");
 const authApi = require('./authApi');
 const modelApi = require('./modelApi');
 const deepApi = require('./mlApi');
+const decompress = require("decompress");
 const csv = require("fast-csv")
 
 var storage = multer.diskStorage(
@@ -38,18 +39,31 @@ router.post('/upload',uploadImg.single('upload'),async (req,res)=>{
       response.type = matches[1];
       response.data = Buffer.from(matches[2], 'base64');
       //console.log(matches[1])
+        var csvPath = ''
       let decodedImg = response;
       let imageBuffer = decodedImg.data;
       let type = decodedImg.type;
       let extension = mime.extension(type);
-      let fileName = `Deep-${Date.now().toString()+"-"+req.body.imgName}.${extension}`;
-      //console.log(fileName)
+      let fileName = `Deep-${Date.now().toString()+"-"+req.body.imgName}.deep`//${extension}`;
       try {
       fs.writeFileSync(`./dataset/${userFolder}/` + fileName, imageBuffer, 'utf8');
-      
+      const decFile = await decompress(`./dataset/${userFolder}/`+fileName)
+      .then((files) => {
+        response.type = files[0].type;
+        response.data = Buffer.from(files[0].data, 'base64');
+        //console.log(matches[1])f
+        let decodedImg = response;
+        let imageBuffer = decodedImg.data;
+        let type = decodedImg.type;
+        csvPath = `./dataset/${userFolder}/` + files[0].path
+        fs.writeFileSync(csvPath, imageBuffer, 'utf8');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
       //console.log("write")
       return res.send({message:"upload Done",
-          url:`/dataset/${userFolder}/`+fileName});
+          url:csvPath});
       } catch (e) {
           res.send({"status":"failed",error:e});
       }
