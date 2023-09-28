@@ -25,7 +25,6 @@ function InlineUpload(props){
             body:JSON.stringify({data:tempfile,userFolder:"milad",
                 imgName:uploadFile.name.split('.')[0]})
           }
-        console.log(postOptions)
         fetch(env.siteApi + "/upload",postOptions)
         .then(res => res.json())
         .then(

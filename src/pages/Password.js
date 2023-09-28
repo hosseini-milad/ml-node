@@ -49,9 +49,9 @@ function Password(){
                             <p className="hidden">Quer alterar a sua password atual? Insira a sua password atual e insira a sua nova password a utilizar.</p>
                         </div>
                         <div className="form-field-fiin">
-                            <label htmlFor="first-name">Password Atual</label>
+                            <label htmlFor="first-name">Current Password</label>
                             <input type={showPass===1?"input":"password"} 
-                                name="firstname" id="first-name" placeholder="Password Atual"
+                                name="firstname" id="first-name" placeholder="Current Password"
                             onChange={(e)=>setPass(data => ({
                                 ...data,
                                 ...{oldPass:e.target.value}
@@ -60,9 +60,9 @@ function Password(){
                                 onClick={()=>setShowPass(showPass===1?0:1)}></span>
                         </div>
                         <div className="form-field-fiin">
-                            <label htmlFor="last-name">Nova Password​</label>
+                            <label htmlFor="last-name">New Password​</label>
                             <input type={showPass===2?"input":"password"} 
-                                name="lastname" id="last-name" placeholder="Nova Password"
+                                name="lastname" id="last-name" placeholder="New Password"
                             onChange={(e)=>setPass(data => ({
                                 ...data,
                                 ...{newPass:e.target.value}
@@ -71,9 +71,9 @@ function Password(){
                             onClick={()=>setShowPass(showPass===2?0:2)}></span>
                         </div>
                         <div className="form-field-fiin">
-                            <label htmlFor="telefone">Confirme a sua password</label>
+                            <label htmlFor="telefone">Confirm password</label>
                             <input type={showPass===3?"input":"password"} 
-                            name="confirm" id="confirm" placeholder="Confirme a sua password"
+                            name="confirm" id="confirm" placeholder="Confirm password"
                             onChange={(e)=>setPass(data => ({
                                 ...data,
                                 ...{confPass:e.target.value}
@@ -83,7 +83,7 @@ function Password(){
                         </div>
                         <div className="footer-form-fiin">
                             <button type="submit" className="btn-fiin" name="submit"
-                            onClick={()=>changePass()}>Alterar</button>
+                            onClick={()=>changePass()}>Change</button>
                             <small className="errorSmall" style={{color:error.color}}>
                             {error.message}</small>
                         </div>

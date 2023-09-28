@@ -5,8 +5,13 @@ const cookies = new Cookies();
 
 function ModelAccordion(props){
     const [tab,setTab] = useState(0)
+    const [value,setValue] = useState('')
+    const [data,setData] = useState([])
+    const [training,setTraining]= useState()
+    const [error,setError] = useState({message:'',color:"brown"})
     const trainModel=(trainUrl)=>{
-        console.log(trainUrl)
+        //console.log(trainUrl)
+        setTraining(1)
         const token=cookies.get('Deep-login')
         const postOptions={
             method:'post',
@@ -16,14 +21,16 @@ function ModelAccordion(props){
             body:JSON.stringify({
                 datasetUrl:trainUrl.datasetUrl,
                 datasetName:trainUrl.dataset,
-                datasetFolder:trainUrl.userFolder})
+                datasetFolder:trainUrl.userFolder,
+                modelId:trainUrl._id})
           }
         console.log(postOptions)
-        0&&fetch(env.siteApi + "/deep/train-model",postOptions)
+        fetch(env.siteApi + "/deep/train-model",postOptions)
         .then(res => res.json())
         .then(
             (result) => {
                 console.log(result)
+                setTraining(0)
                 if(result.error){
 
                 }
@@ -35,6 +42,51 @@ function ModelAccordion(props){
                 console.log(error)
             })
     }
+    const testModel=(url)=>{
+        //console.log(trainUrl)
+        const token=cookies.get('Deep-login')
+        const postOptions={
+            method:'post',
+            headers: { 'Content-Type': 'application/json' ,
+            "x-access-token": token&&token.token,
+            "userId":token&&token.userId},
+            body:JSON.stringify({
+                datasetUrl:url,
+                testData:data})
+          }
+        //console.log(postOptions)
+        fetch(env.siteApi + "/deep/test-data-bulk",postOptions)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                console.log(result)
+                if(result.error){
+
+                }
+                else{
+                    setData(result.testResult)
+                    setError({message:"Completed",color:"green"})
+                    setTimeout(()=>setError({message:'',color:"brown"}),5000)
+                }
+            },
+            (error) => {
+                console.log(error)
+            })
+    }
+    const addSample=(sData)=>{
+        var tempData = []
+        var arrData = sData.replace(/\t/g , ',')
+        tempData =(arrData.split(' '))
+        var tempObject = []
+        for(var i=0;i<tempData.length;i++)
+            tempObject.push({data:tempData[i]})
+        setData(
+        [   ...data,
+            ...tempObject
+            ])
+        setValue('')
+    }
+>>>>>>> 5127b071387e2c6bd0e131536ad4565967aa3e7d
     return(
         <div className="accordions">
             {props.modelList&&props.modelList.map((model,i)=>(
@@ -68,8 +120,10 @@ function ModelAccordion(props){
                             </div>
                             <div className="col">
                                 <div className="list-item">
-                                    <span>Score: </span>
-                                    {model.score}
+                                {training?<span>system is training, Please Wait</span>
+                                :<input type="button" value="train Model" className="btn-fiin"
+                                    onClick={()=>trainModel(model)} />}
+
                                 </div>
                             </div>
                             <div className="col">
@@ -84,36 +138,40 @@ function ModelAccordion(props){
                     </div>
                     <div className="accordion-content" id="item1" 
                         style={{display:tab===i+1?"block":"none"}}>
-                        <div className="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2  row-cols-1">
+
+                        <div className="row">
                             
-                            <div className="col">
+                            <div className="col col-8">
                                 <div className="list-item">
-                                    <span>Result1: </span>Result1
+                                    <span>Sample Data: </span>
+                                    <input type="text" placeholder="Sample Data Row" value={value}
+                                    className="inputTest" onKeyDown={(e)=>(e.key === "Enter")?
+                                        (addSample(e.target.value)):''} 
+                                          onChange={(e)=>setValue(e.target.value)}/>
+                                </div>
+                                <table><tbody>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Result</th>
+                                    </tr>
+                                    {data?data.map((row,i)=>(
+                                    <tr key={i}>
+                                        <td className="dataHolder">{row.data}</td>
+                                        <td>{row.result}</td>
+                                    </tr>)):<></>}
+                                    </tbody></table>
+                            </div>
+                            
+                            <div className="col col-2">
+                                <div className="list-item">
+                                    {model.trainUrl?<input type="button" value="test Model" className="btn-fiin"
+                                    onClick={()=>testModel(model.trainUrl)} />:
+                                    <small>Train First</small>}
                                 </div>
                             </div>
-                            <div className="col">
-                                <div className="list-item">
-                                    <span>Result2: </span>Result2
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="list-item">
-                                    <span>Result3: </span>Result3
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="list-item">
-                                    <span>Credito Solictado :</span>320 000 000 €
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="list-item">
-                                    <input type="button" value="train Model" className="btn-fiin"
-                                    onClick={()=>trainModel(model)} />
-                                </div>
-                            </div>
+                            <small className="errorSmall" style={{color:error.color}}>
+                                {error.message}</small>
                         </div>
-                        
                     </div>
                 </div>
             ))}

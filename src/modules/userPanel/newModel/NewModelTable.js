@@ -24,7 +24,6 @@ const NewModelTable = (props)=>{
                 dataset:upFile?upFile.split('/')[3]:'',
                 datasetUrl:upFile})
           }
-        console.log(postOptions)
         fetch(env.siteApi + "/model/create-model",postOptions)
         .then(res => res.json())
         .then(
@@ -34,7 +33,7 @@ const NewModelTable = (props)=>{
 
                 }
                 else{
-                    props.setUpFile(result.url)
+                    setUpFile(result.url)
                 }
             },
             (error) => {
@@ -69,7 +68,7 @@ const NewModelTable = (props)=>{
                           }))}/>
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-12">
                     <div className="form-field-fiin">
                         <label htmlFor="NIFCompany">DataSet<sup>*</sup></label>
                         <InlineUpload upFile={upFile} setUpFile={setUpFile}/>
