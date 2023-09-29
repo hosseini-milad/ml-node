@@ -47,8 +47,8 @@ function InlineUpload(props){
              <i style={{marginRight:"6px"}}>{"props.upFile.split('-')[2]"}</i>
                 <span className="icon-upload"></span></a>:<>
             <label htmlFor="files" className="btn-cancel">
-                <span className="icon-upload"></span> Upload PDF</label>
-            <input id="files" type="file" name="upload" className="btn-cancel hidden" 
+                <span className="icon-upload"></span> Upload ZIP</label>
+            <input id="files" type="file" accept=".zip" className="btn-cancel hidden" 
                 onChange={onFileRecieve}/></> }
         </div>
     )

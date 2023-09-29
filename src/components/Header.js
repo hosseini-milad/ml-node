@@ -24,11 +24,8 @@ const Header = (props)=>{
                     <span className="menu-close" onClick={()=>setConvas(0)}>
                         <span className="icon-close"></span></span>
                     <ul className="main-menu">
-<<<<<<< HEAD
-                        {token.level<3?<>
-=======
+
                         {token.level<20?<>
->>>>>>> 5127b071387e2c6bd0e131536ad4565967aa3e7d
                             <li><a href="/user/models">Models</a></li>
                             <li><a href="/user/new-model">New Models</a></li>
                             </>:<></>}

@@ -20,11 +20,9 @@ import Login from './pages/Login';
 import UserModels from './modules/userPanel/userModels';
 import errortrans from './translate/error';
 import NewModelHolder from './modules/userPanel/newModelHolder';
-<<<<<<< HEAD
-=======
+
 import Profile from './pages/Profile';
 import Password from './pages/Password';
->>>>>>> 5127b071387e2c6bd0e131536ad4565967aa3e7d
 const cookies = new Cookies();
 var lang = JSON.parse(localStorage.getItem('deep-lang'));
 
@@ -41,12 +39,10 @@ root.render(
       <Routes>
         <Route path="/" element={<Layout><Dashboard/></Layout>}/>
         <Route path="/dashboard" element={<Layout><Dashboard/></Layout>}/>
-<<<<<<< HEAD
-=======
+
         <Route path="/profile" element={<Layout><Profile/></Layout>}/>
         <Route path="/password" element={<Layout><Password/></Layout>}/>
->>>>>>> 5127b071387e2c6bd0e131536ad4565967aa3e7d
-        
+
         {/* User Pages */}
         <Route path="/user/models" element={<Layout><UserModels/></Layout>}/>
         <Route path="/user/new-model" element={<Layout><NewModelHolder/></Layout>}/>

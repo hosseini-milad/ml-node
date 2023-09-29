@@ -1,5 +1,5 @@
 import { useState } from "react"
-import env from "../../env"
+import env, { normalPrice } from "../../env"
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
@@ -12,7 +12,7 @@ function ModelAccordion(props){
     const trainModel=(trainUrl)=>{
         //console.log(trainUrl)
         setTraining(1)
-        const token=cookies.get('Deep-login')
+        const token=cookies.get('deep-login')
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,
@@ -24,7 +24,6 @@ function ModelAccordion(props){
                 datasetFolder:trainUrl.userFolder,
                 modelId:trainUrl._id})
           }
-        console.log(postOptions)
         fetch(env.siteApi + "/deep/train-model",postOptions)
         .then(res => res.json())
         .then(
@@ -86,7 +85,6 @@ function ModelAccordion(props){
             ])
         setValue('')
     }
->>>>>>> 5127b071387e2c6bd0e131536ad4565967aa3e7d
     return(
         <div className="accordions">
             {props.modelList&&props.modelList.map((model,i)=>(
@@ -115,7 +113,7 @@ function ModelAccordion(props){
                             <div className="col">
                                 <div className="list-item">
                                     <span>Records: </span>
-                                    {model.records}
+                                    {normalPrice(model.dataRecord)}
                                 </div>
                             </div>
                             <div className="col">
@@ -156,7 +154,7 @@ function ModelAccordion(props){
                                     </tr>
                                     {data?data.map((row,i)=>(
                                     <tr key={i}>
-                                        <td className="dataHolder">{row.data}</td>
+                                        <td className="dataHolder" title={row.data}>{row.data}</td>
                                         <td>{row.result}</td>
                                     </tr>)):<></>}
                                     </tbody></table>

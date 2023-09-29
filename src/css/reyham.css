@@ -53,6 +53,7 @@ html{
 }
 .btn-fiin{
     min-width: 180px;
+    max-width: 100%;
 }
 .btn-email {
     background: var(--main-dark);

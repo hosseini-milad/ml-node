@@ -1,8 +1,8 @@
 const env={
-    siteApi:'http://localhost:4099/api',
+    siteApi:'http://localhost:4050/api',
     //siteApi:'https://fiinadmin.deleves.com/api',
     
-    siteApiUrl:'http://localhost:4099',
+    siteApiUrl:'http://localhost:4050',
     //siteApiUrl:'https://fiinadmin.deleves.com',
 
     columnOrder:['lead','informations','fiin','property','seguros',
@@ -75,4 +75,14 @@ export const StandardCurrency=(number)=>{
   if(decimal<10)decimal="0"+decimal
   var seprateComma = (pureNumber/100).toString().split('.')[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   return seprateComma+"."+decimal+"€"
+}
+export function normalPrice(priceText,xtra){
+  if(!priceText||priceText === null||priceText === undefined) return("")
+  
+  try{priceText =priceText.split(' ')[0];}catch{}
+  var rawPrice = priceText.toString().replace(/\D/g,'')
+  //console.log(rawPrice,priceText)
+  return(
+    (rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace( /^\D+/g, '')+(xtra?xtra:''))
+  )
 }
