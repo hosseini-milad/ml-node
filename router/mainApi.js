@@ -7,6 +7,7 @@ const { parse } = require("csv-parse");
 const authApi = require('./authApi');
 const modelApi = require('./modelApi');
 const deepApi = require('./mlApi');
+const cryptApi = require('./cryptApi');
 const decompress = require("decompress");
 const csv = require("fast-csv")
 
@@ -25,6 +26,7 @@ const uploadImg = multer({ storage: storage ,
 router.use('/auth', authApi)
 router.use('/model', modelApi)
 router.use('/deep', deepApi)
+router.use('/crypt', cryptApi)
 router.post('/upload',uploadImg.single('upload'),async (req,res)=>{
   try{
     var userFolder = req.body.userFolder
