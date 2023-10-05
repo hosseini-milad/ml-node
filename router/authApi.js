@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-var ObjectID = require('mongodb').ObjectID;
+var ObjectID = require('mongodb').ObjectId;
 const jsonParser = bodyParser.json();
 const router = express.Router()
 const auth = require("../middleware/auth");
@@ -198,7 +198,7 @@ router.post('/change-user',auth,jsonParser, async (req,res)=>{
         date: Date.now()
       }
       // Validate if user exist in our database
-      const userOwner = await User.updateOne({_id:ObjectID(req.body._id)},
+      const userOwner = await User.updateOne({_id:new ObjectID(req.body._id)},
         {$set:data});
       //console.log(await bcrypt.compare(userOwner.password, data.oldPass))
       

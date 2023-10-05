@@ -8,9 +8,9 @@ const router = express.Router()
 const auth = require("../middleware/auth");
 const models = require('../models/main/models');
 
-router.post('/models-list',jsonParser, async (req,res)=>{
+router.post('/models-list',jsonParser,auth, async (req,res)=>{
     try {
-        const modelsList = await models.find()
+        const modelsList = await models.find({userId:req.headers['userid']})
         res.status(200).json({data: modelsList,message:"model List"})
         } 
     catch(error){
@@ -33,7 +33,7 @@ router.post('/create-model',auth,jsonParser, async (req,res)=>{
         date: Date.now()
       }
         const modelDetail = await models.create(data)
-       res.status(200).json({data: modelDetail,message:"model Created"})
+      res.status(200).json({data: modelDetail,message:"model Created"})
     }
   catch(error){
       res.status(500).json({message: error.message})

@@ -92,8 +92,8 @@ router.post('/train-model',jsonParser, async (req,res)=>{
       //
       const trainResult = await trainFunction(data,
         datasetFolder,datasetName,modelId,req.headers["userid"])
-      
-      res.json(trainResult);
+      const modelsList = await ModelSchema.find({userId:req.headers['userid']})
+      res.json({data:modelsList,result:trainResult});
       
     });
 

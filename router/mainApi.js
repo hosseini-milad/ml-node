@@ -8,8 +8,11 @@ const authApi = require('./authApi');
 const modelApi = require('./modelApi');
 const deepApi = require('./mlApi');
 const cryptApi = require('./cryptApi');
+const auth = require("../middleware/auth");
+var ObjectID = require('mongodb').ObjectId;
 const decompress = require("decompress");
-const csv = require("fast-csv")
+const csv = require("fast-csv");
+const users = require('../models/auth/users');
 
 var storage = multer.diskStorage(
   {
@@ -27,10 +30,14 @@ router.use('/auth', authApi)
 router.use('/model', modelApi)
 router.use('/deep', deepApi)
 router.use('/crypt', cryptApi)
-router.post('/upload',uploadImg.single('upload'),async (req,res)=>{
+router.post('/upload',uploadImg.single('upload'),auth,async (req,res)=>{
   try{
-    var userFolder = req.body.userFolder
-      //console.log("upload Start")
+      const userData = await users.findOne({_id:new ObjectID(req.headers['userid'])})
+      if(!userData){
+        res.status(500).json({error:"user not found!"})
+        return
+      }
+    var userFolder = userData.username
       var matches = await req.body.data.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
       
       response = {};
@@ -48,6 +55,9 @@ router.post('/upload',uploadImg.single('upload'),async (req,res)=>{
       let extension = mime.extension(type);
       let fileName = `Deep-${Date.now().toString()+"-"+req.body.imgName}.deep`//${extension}`;
       try {
+        if (!fs.existsSync(`./dataset/${userFolder}`)){
+          fs.mkdirSync(`./dataset/${userFolder}`, { recursive: true });
+        }
       fs.writeFileSync(`./dataset/${userFolder}/` + fileName, imageBuffer, 'utf8');
       const decFile = await decompress(`./dataset/${userFolder}/`+fileName)
       .then((files) => {
