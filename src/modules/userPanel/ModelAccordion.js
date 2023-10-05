@@ -31,10 +31,13 @@ function ModelAccordion(props){
                 console.log(result)
                 setTraining(0)
                 if(result.error){
-
+                    setError({message:result.error,color:"brown"})
+                    setTimeout(()=>setError({message:'',color:"brown"}),3000)
                 }
                 else{
-                    
+                    props.setModels(result.data)
+                    setError({message:result.message,color:"green"})
+                setTimeout(()=>setError({message:'',color:"brown"}),3000)
                 }
             },
             (error) => {

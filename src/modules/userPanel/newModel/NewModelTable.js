@@ -28,12 +28,14 @@ const NewModelTable = (props)=>{
         .then(res => res.json())
         .then(
             (result) => {
-                console.log(result)
                 if(result.error){
-
+                    setError({message:result.error,color:"brown"})
+                    setTimeout(()=>setError({message:'',color:"brown"}),3000)
                 }
                 else{
                     setUpFile(result.url)
+                    setError({message:result.message,color:"green"})
+                    setTimeout(()=>window.location.reload(),3000)
                 }
             },
             (error) => {
@@ -71,7 +73,7 @@ const NewModelTable = (props)=>{
                 <div className="col-md-12">
                     <div className="form-field-fiin">
                         <label htmlFor="NIFCompany">DataSet<sup>*</sup></label>
-                        <InlineUpload upFile={upFile} setUpFile={setUpFile}/>
+                        <InlineUpload upFile={upFile} setUpFile={setUpFile} token={token}/>
                     </div>
                 </div>
                 

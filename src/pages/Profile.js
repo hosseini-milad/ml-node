@@ -20,9 +20,9 @@ function Profile(){
             headers: { 'Content-Type': 'application/json' ,
             "x-access-token": token&&token.token,
             "userId":token&&token.userId},
-            body:JSON.stringify({userId:userId})
+            body:JSON.stringify({userId:token&&token.userId})
           }
-        //console.log(postOptions)
+        console.log(postOptions)
         fetch(env.siteApi + "/auth/find-user-admin",postOptions)
       .then(res => res.json())
       .then(
@@ -132,7 +132,7 @@ function Profile(){
                                 <div className="form-field-fiin">
                                     <label htmlFor="nif">Meli Code</label>
                                     <input type="text" name="nif" id="nif" 
-                                    defaultValue={users&&users.nif}
+                                    defaultValue={users&&users.meliCode}
                                     onChange={(e)=>setUsers(data => ({
                                         ...data,
                                         ...{meliCode:e.target.value}

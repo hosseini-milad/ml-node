@@ -1,7 +1,5 @@
 import { useState } from "react";
 import env from "../../../env";
-import Cookies from 'universal-cookie';
-const cookies = new Cookies();
 
 function InlineUpload(props){
     const [uploadFile,setUploadFile] = useState()
@@ -18,10 +16,13 @@ function InlineUpload(props){
     const onFileRecieve= async(event)=>{
         const uploadFile = event.target.files[0]
         const tempfile = await resizeFile(uploadFile);
-        const token=cookies.get('Deep-login')
+        const token=props.token
         const postOptions={
             method:'post',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json',
+            "x-access-token": token&&token.token,
+            "userId":token&&token.userId
+        },
             body:JSON.stringify({data:tempfile,userFolder:"milad",
                 imgName:uploadFile.name.split('.')[0]})
           }
