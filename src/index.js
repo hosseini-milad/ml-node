@@ -23,6 +23,9 @@ import NewModelHolder from './modules/userPanel/newModelHolder';
 
 import Profile from './pages/Profile';
 import Password from './pages/Password';
+import NewManual from './modules/Ridge/newManual';
+import ManualModels from './modules/Ridge/Models/ManualModels';
+import ManualFunction from './modules/Ridge/Models/ManualFunction';
 const cookies = new Cookies();
 var lang = JSON.parse(localStorage.getItem('deep-lang'));
 
@@ -47,6 +50,11 @@ root.render(
         <Route path="/user/models" element={<Layout><UserModels/></Layout>}/>
         <Route path="/user/new-model" element={<Layout><NewModelHolder/></Layout>}/>
         
+        {/* User Pages */}
+        <Route path="/ridge/models" element={<Layout><ManualModels/></Layout>}/>
+        <Route path="/ridge/new-model" element={<Layout><NewManual/></Layout>}/>
+        <Route path="/ridge/manual/:modelId" element={<Layout><ManualFunction/></Layout>}/>
+
       </Routes>:
       <Routes>
         <Route path="/" element={<Login lang={lang}/>}/>

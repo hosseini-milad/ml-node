@@ -37,7 +37,7 @@ function Login(props){
                     name:result.cName+" "+result.sName,
                     date:result.date,
                     token:result.token,
-                    username:result.cName+" "+result.sName
+                    username:result.username
                 }, { path: '/' });
                 window.location.reload()
             }

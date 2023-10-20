@@ -1,19 +1,20 @@
 import Breadcrumb from "../../components/BreadCrumb"
-import RegisterCompany from "./RegisterCompany"
+import NewManualTable from "./NewManualTable"
 
-const RegAgency = (props)=>{
+function NewManual(){
     return(
-        <div className="container">
-        <Breadcrumb title={"Registo de agency"}/>
+    <div className="container">
+        <Breadcrumb title={"Create New Manual Model"}/>
 
         <div className="section-fiin registo-de-consultores">
             <div className="row justify-content-center">
                 <div className="col-lg-8">
-                    <RegisterCompany access={"agency"} showpass="true" title="agência"/>
+                    <NewManualTable showpass="true" title="Ridge Model"/>
                 </div>
             </div>
         </div>
     </div>
     )
+
 }
-export default RegAgency
+export default NewManual

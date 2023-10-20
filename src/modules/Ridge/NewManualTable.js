@@ -1,11 +1,11 @@
 import { useState } from "react"
-import WaitingBtn from "../../../components/Button/waitingBtn";
+import WaitingBtn from "../../components/Button/waitingBtn";
 import Cookies from 'universal-cookie';
-import InlineUpload from "./InlineUpload";
-import env from "../../../env";
+import env from "../../env";
+import InlineUpload from "../userPanel/newModel/InlineUpload";
 const cookies = new Cookies();
 
-const NewModelTable = (props)=>{
+const NewManualTable = (props)=>{
     const [regElement,setRegElement] = useState('')
     const [error,setError] = useState({message:'',color:"brown"})
     const [upFile,setUpFile] = useState()
@@ -21,7 +21,7 @@ const NewModelTable = (props)=>{
             body:JSON.stringify({name:regElement.modelName,
                 desription:regElement.description,
                 userFolder:token&&token.username,
-                type:"simple",
+                type: "ridge",
                 dataset:upFile?upFile.split('/')[3]:'',
                 datasetUrl:upFile})
           }
@@ -44,9 +44,9 @@ const NewModelTable = (props)=>{
             })
     }
     return(
-        <div className="form-fiin form-box-style">
+        <div className="form-fiin form-box-style ridgeModel">
             <div className="section-head">
-                <h1 className="section-title">Create New Model</h1>
+                <h1 className="section-title">Create New Ridge Model</h1>
                 <p >using Machine learning</p>
                 <hr/>
             </div>
@@ -89,4 +89,4 @@ const NewModelTable = (props)=>{
         </div>
     )
 }
-export default NewModelTable
+export default NewManualTable

@@ -296,6 +296,11 @@ z-index: 20;
     width: 70px;
 }
 
+.ridgeModel{
+    border-top:3px solid orangered
+}
+
+
 @media only screen and (max-width:1200px){
     .table-fiin table {
         max-width: 1300px;
