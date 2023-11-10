@@ -28,7 +28,8 @@ const Header = (props)=>{
                         {token.level<20?<>
                             <li><a href="/user/models">Models</a></li>
                             <li><a href="/user/new-model">New Models</a></li>
-                            <li><a href="/ridge/new-model">Ridge Models</a></li>
+                            <li><a href="/ridge/models">Ridge Models</a></li>
+                            <li><a href="/ridge/new-model">New Ridge Model</a></li>
                             </>:<></>}
                         {token.level===2?<>
                         <li><a href="/partner/register">Add Partner</a></li>

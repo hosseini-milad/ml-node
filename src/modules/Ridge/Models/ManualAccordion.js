@@ -45,6 +45,52 @@ function ManualAccordion(props){
                 console.log(error)
             })
     }
+    const testModel=(url)=>{
+        //console.log(trainUrl)
+        const token=cookies.get('Deep-login')
+        const postOptions={
+            method:'post',
+            headers: { 'Content-Type': 'application/json' ,
+            "x-access-token": token&&token.token,
+            "userId":token&&token.userId},
+            body:JSON.stringify({
+                datasetUrl:url,
+                testData:data})
+          }
+        //console.log(postOptions)
+        fetch(env.siteApi + "/deep/test-data-bulk",postOptions)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                console.log(result)
+                if(result.error){
+
+                }
+                else{
+                    setData(result.testResult)
+                    setError({message:"Completed",color:"green"})
+                    setTimeout(()=>setError({message:'',color:"brown"}),5000)
+                }
+            },
+            (error) => {
+                console.log(error)
+            })
+    }
+    const addSample=(sData)=>{
+        var tempData = []
+        var arrData = sData
+            .replace(/\t/g , ',')
+            
+        tempData =(arrData.split(' '))
+        var tempObject = []
+        for(var i=0;i<tempData.length;i++)
+            tempObject.push({data:tempData[i]})
+        setData(
+        [   ...data,
+            ...tempObject
+            ])
+        setValue('')
+    }
     return(
         <div className="accordions">
             {props.modelList&&props.modelList.map((model,i)=>(
@@ -78,9 +124,8 @@ function ManualAccordion(props){
                             </div>
                             <div className="col">
                                 <div className="list-item">
-                                {training?<span>system is training, Please Wait</span>
-                                :<input type="button" value="train Model" className="btn-fiin"
-                                    onClick={()=>trainModel(model)} />}
+                                <input type="button" value="manual Model" className="btn-fiin"
+                                    onClick={()=>window.location.href='/ridge/manual/'+model._id} />
 
                                 </div>
                             </div>
@@ -91,12 +136,47 @@ function ManualAccordion(props){
                                 </div>
                             </div>
                         </div>
-                        <span className="show-more" 
-                        onClick={()=>window.location.href='/ridge/manual/'+model._id}>Show Detail</span>
+                        <span className="show-more"
+                        onClick={()=>tab===i+1?setTab(0):setTab(i+1)}>Show Detail</span>
                     </div>
-                    
+                    <div className="accordion-content" id="item1" 
+                        style={{display:tab===i+1?"block":"none"}}>
+                        <div className="row">
+                            <div className="col col-8">
+                                <div className="list-item">
+                                    <span>Sample Data: </span>
+                                    <input type="text" placeholder="Sample Data Row" value={value}
+                                    className="inputTest" onKeyDown={(e)=>(e.key === "Enter")?
+                                        (addSample(e.target.value)):''} 
+                                            onChange={(e)=>setValue(e.target.value)}/>
+                                </div>
+                                <table><tbody>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Result</th>
+                                    </tr>
+                                    {data?data.map((row,i)=>(
+                                    <tr key={i}>
+                                        <td className="dataHolder" title={row.data}>{row.data}</td>
+                                        <td>{row.result}</td>
+                                    </tr>)):<></>}
+                                    </tbody></table>
+                            </div>
+                            
+                            <div className="col col-2">
+                                <div className="list-item">
+                                    {model.trainUrl?<input type="button" value="test Model" className="btn-fiin"
+                                    onClick={()=>testModel(model.trainUrl)} />:
+                                    <small>Train First</small>}
+                                </div>
+                            </div>
+                            <small className="errorSmall" style={{color:error.color}}>
+                                {error.message}</small>
+                        </div>
+                    </div>
                 </div>
             ))}
+            
         </div>
     )
 }
