@@ -133,7 +133,7 @@ function ModelAccordion(props){
                                         <span className="icon-pass-lock"></span> DataSet</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                         <span className="show-more" 
                         onClick={()=>tab===i+1?setTab(0):setTab(i+1)}>Show Detail</span>
                     </div>
