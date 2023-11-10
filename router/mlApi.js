@@ -56,11 +56,10 @@ router.post('/test-data-bulk', async (req,res)=>{
     const networkState = JSON.parse(fs.readFileSync(req.body.datasetUrl, "utf-8"));
     net.fromJSON(networkState);
     var testResult=[]
-    console.log(testData.length) 
     for(var i=0;i<testData.length;i++){
       testResult.push({data:testData[i].data,result:
         net.run(normalize(testData[i].data.split(',').map(str => {
-          return parseFloat(str);
+          return normalFloat(str);
         })))[0]
       })
       }
@@ -70,7 +69,12 @@ router.post('/test-data-bulk', async (req,res)=>{
       res.status(500).json({message: error.message})
   }
   })
-  
+const normalFloat=(str)=>{
+  var retStr =parseFloat(str)
+  if(isNaN(retStr))retStr=str.charCodeAt(0)
+
+  return(retStr)
+} 
 
 router.post('/train-model',jsonParser, async (req,res)=>{
   const modelId = req.body.modelId
