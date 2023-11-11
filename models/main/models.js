@@ -10,7 +10,8 @@ const ModelSchema = new Schema({
     desription:   String,
     dataset:   String,
     datasetUrl:   String,
-    dataRecord:Number,
+    dataRecord: Number,
+    dataColumn: Number,
     trainData:   String,
     trainUrl:   String,
 
