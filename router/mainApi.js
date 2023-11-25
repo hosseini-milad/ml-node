@@ -8,6 +8,8 @@ const authApi = require('./authApi');
 const modelApi = require('./modelApi');
 const deepApi = require('./mlApi');
 const cryptApi = require('./cryptApi');
+const panelUserApi = require('./panelUserApi')
+const panelModelApi = require('./panelModelApi')
 const auth = require("../middleware/auth");
 var ObjectID = require('mongodb').ObjectId;
 const decompress = require("decompress");
@@ -30,6 +32,8 @@ router.use('/auth', authApi)
 router.use('/model', modelApi)
 router.use('/deep', deepApi)
 router.use('/crypt', cryptApi)
+router.use('/panel/user', panelUserApi)
+router.use('/panel/model', panelModelApi)
 router.post('/upload',uploadImg.single('upload'),auth,async (req,res)=>{
   try{
       const userData = await users.findOne({_id:new ObjectID(req.headers['userid'])})

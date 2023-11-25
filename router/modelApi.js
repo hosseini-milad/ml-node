@@ -15,8 +15,8 @@ const ManualTrain = require('../middleware/manualTrain');
 
 router.post('/models-list',jsonParser,auth, async (req,res)=>{
     try {
-        const modelsList = await models.find({userId:req.headers['userid']})
-          .find({type:(req.body.type?req.body.type:'')})
+        const modelsList = await models.find()//{userId:req.headers['userid']})
+          //.find({type:(req.body.type?req.body.type:'')})
         res.status(200).json({data: modelsList,message:"model List"})
         } 
     catch(error){

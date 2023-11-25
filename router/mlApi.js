@@ -14,6 +14,7 @@ const ModelSchema  = require('../models/main/models');
 const ProgressSchema = require('../models/main/progress');
 
 
+
 router.post('/test-data', async (req,res)=>{
 const testData = req.body.testData
 const config = {
@@ -164,9 +165,26 @@ router.get('/test-trace', async (req,res)=>{
   //end the response process
   res.end();
   })
-  router.get('/trace-train', async (req,res)=>{
-    const ProgressNow = await ProgressSchema.findOne({userId:req.headers["userid"]})
-    res.json({status:ProgressNow})
-    })
+router.get('/trace-train', async (req,res)=>{
+  const ProgressNow = await ProgressSchema.findOne({userId:req.headers["userid"]})
+  res.json({status:ProgressNow})
+})
+router.post('/ridge-train', async (req,res)=>{
+  // Example data
+  const x = [[0, 1], [1, 2], [2, 3], [3, 4]];
+  const y = [2, 3, 4, 5];
+
+  // Create a Ridge Regression model
+  const ridgeModel = ''//new ridgeRegression.RidgeRegression({
+    
+
+  // Train the Ridge Regression model
+  ridgeModel.train(x, y);
+
+  // Make predictions
+  const newInput = [4, 5];
+  const prediction = ridgeModel.predict(newInput);
+  res.json({prediction:prediction})
+})
 
 module.exports = router;
