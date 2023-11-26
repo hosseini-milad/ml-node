@@ -12,6 +12,7 @@ const fs = require("fs");
 const normalize = require('array-normalize');
 const ModelSchema  = require('../models/main/models');
 const ProgressSchema = require('../models/main/progress');
+const regression =require('regression');
 
 
 
@@ -170,21 +171,10 @@ router.get('/trace-train', async (req,res)=>{
   res.json({status:ProgressNow})
 })
 router.post('/ridge-train', async (req,res)=>{
-  // Example data
-  const x = [[0, 1], [1, 2], [2, 3], [3, 4]];
-  const y = [2, 3, 4, 5];
-
-  // Create a Ridge Regression model
-  const ridgeModel = ''//new ridgeRegression.RidgeRegression({
-    
-
-  // Train the Ridge Regression model
-  ridgeModel.train(x, y);
-
-  // Make predictions
-  const newInput = [4, 5];
-  const prediction = ridgeModel.predict(newInput);
-  res.json({prediction:prediction})
+  const result =regression.linear([[0, 1], [32, 67], [12, 79]]);
+  const gradient = result.equation[0];
+  const yIntercept = result.equation[1];
+  res.json({gradient:gradient,yIntercept:yIntercept})
 })
 
 module.exports = router;

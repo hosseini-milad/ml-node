@@ -1,6 +1,8 @@
 var express = require('express');
 require("dotenv").config();
 require("./middleware/database").connect();
+const logger = require('./middleware/logger');
+
 
 const bodyParser = require('body-parser');
 var app = module.exports = express();
@@ -11,6 +13,27 @@ app.use('/dataset', express.static('dataset'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(bodyParser.json())
+
+app.use((req, res, next) => {
+  // Log API requests
+  console.log({
+    message: 'API request',
+    method: req.method,
+    path: req.path,
+    query: req.query,
+    body: req.body,
+    res:res.body
+  })
+  logger.info({
+    message: 'API request',
+    method: req.method,
+    path: req.path,
+    query: req.query,
+    body: req.body,
+  });
+
+  next();
+});
 
 const mainApi = require('./router/mainApi')
 const { API_PORT } = process.env;
