@@ -13,6 +13,9 @@ const normalize = require('array-normalize');
 const ModelSchema  = require('../models/main/models');
 const ProgressSchema = require('../models/main/progress');
 const regression =require('regression');
+const webLogModel = require('../models/Log/webLogModel');
+const String2Float = require('../middleware/String2Float');
+const OutPutResult = require('../middleware/OutputResult');
 
 
 
@@ -61,7 +64,7 @@ router.post('/test-data-bulk', async (req,res)=>{
     for(var i=0;i<testData.length;i++){
       testResult.push({data:testData[i].data,result:
         net.run(normalize(testData[i].data.split(',').map(str => {
-          return normalFloat(str);
+          return parseFloat(String2Float(str))
         })))[0]
       })
       }
@@ -111,11 +114,10 @@ router.post('/train-model',jsonParser, async (req,res)=>{
 
 const trainFunction=async(row,dsFolder,dsName,modelId,userId)=>{
   var ProgressNow = await ProgressSchema.findOne({userId:userId})
-  //console.log(ProgressNow,userId)
   const config = {
     binaryThresh: 0.5, // ¯\_(ツ)_/¯
     hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
-    activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
+    activation: 'leaky-relu' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
   };
   const net = new brain.NeuralNetwork(config);
   var records = 0
@@ -125,13 +127,13 @@ const trainFunction=async(row,dsFolder,dsName,modelId,userId)=>{
   net.train(
     row.map((data,i)=>(
       {
-        output: [(data.pop().toLowerCase()==="benign"?0:1)],
+        output: [OutPutResult(data.pop())],
         input: normalize(data.map(str => {
-          return parseFloat(str);
+          return parseFloat(String2Float(str));
         }))
       }
     )),
-    {iterations: 100,log: (stats) => regStats(stats,userId,dsName)}
+    {iterations: 100}//,log: (stats) => regStats(stats,userId,dsName)}
     ); 
     const networkState = net.toJSON();
     const jsonPath = `./trainModels/${dsFolder}/Deep${dsName}.json`
@@ -176,5 +178,6 @@ router.post('/ridge-train', async (req,res)=>{
   const yIntercept = result.equation[1];
   res.json({gradient:gradient,yIntercept:yIntercept})
 })
+
 
 module.exports = router;

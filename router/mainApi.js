@@ -7,6 +7,8 @@ const { parse } = require("csv-parse");
 const authApi = require('./authApi');
 const modelApi = require('./modelApi');
 const deepApi = require('./mlApi');
+const reportApi = require('./reportApi')
+const fetchApi = require('./fetchApi');
 const cryptApi = require('./cryptApi');
 const panelUserApi = require('./panelUserApi')
 const panelModelApi = require('./panelModelApi')
@@ -31,6 +33,8 @@ const uploadImg = multer({ storage: storage ,
 router.use('/auth', authApi)
 router.use('/model', modelApi)
 router.use('/deep', deepApi)
+router.use('/fetch', fetchApi)
+router.use('/report', reportApi)
 router.use('/crypt', cryptApi)
 router.use('/panel/user', panelUserApi)
 router.use('/panel/model', panelModelApi)

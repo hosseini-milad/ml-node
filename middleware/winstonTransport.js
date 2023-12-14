@@ -1,3 +1,4 @@
+const axios = require('axios')
 const Transport = require('winston-transport');
 const util = require('util');
 
@@ -11,24 +12,24 @@ class CustomTransport extends Transport {
     setImmediate(() => {
       // Your logic to send the log to the custom web server
       // `info` contains the log message, metadata, etc.
-      this.emit("logged",info);
-      callback();
+      this.sendToWebServer(info);
     });
+    callback();
   }
 
   sendToWebServer(logInfo) {
     // Implement your logic to send the log to your custom web server
     // You can use HTTP/HTTPS request libraries like 'axios', 'node-fetch', etc.
     // Example using axios:
-    /*
-    axios.post('http://your-custom-web-server/endpoint', logInfo)
+    
+    axios.post('http://localhost:5044', logInfo)
       .then(response => {
         console.log('Log sent successfully:', response.data);
       })
       .catch(error => {
         console.error('Error sending log:', error.message);
       });
-    */
+    /**/
   }
 }
 
