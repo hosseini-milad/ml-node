@@ -6,7 +6,6 @@ var ObjectID = require('mongodb').ObjectID;
 const jsonParser = bodyParser.json();
 const router = express.Router()
 const auth = require("../middleware/auth");
-const brain = require("brain.js")
 const readline = require("readline");
 const fs = require("fs");
 const normalize = require('array-normalize');
@@ -26,7 +25,7 @@ const config = {
   activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
 };
 
-const net = new brain.NeuralNetwork(config);
+const net = ''//new brain.NeuralNetwork(config);
 try{
   //console.log(req.body.datasetUrl) 
   const networkState = JSON.parse(fs.readFileSync(req.body.datasetUrl, "utf-8"));
@@ -54,7 +53,7 @@ router.post('/test-data-bulk', async (req,res)=>{
     activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
   };
   
-  const net = new brain.NeuralNetwork(config);
+  const net = ''//new brain.NeuralNetwork(config);
   try{
     //console.log(req.body.datasetUrl) 
     const networkState = JSON.parse(fs.readFileSync(req.body.datasetUrl, "utf-8"));
@@ -118,7 +117,7 @@ const trainFunction=async(row,dsFolder,dsName,modelId,userId)=>{
     hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
     activation: 'leaky-relu' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
   };
-  const net = new brain.NeuralNetwork(config);
+  const net = ''//new brain.NeuralNetwork(config);
   var records = 0
   if(!ProgressNow) ProgressNow=await ProgressSchema.create({
       userId:userId,status:"training",
