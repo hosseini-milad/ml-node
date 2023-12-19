@@ -10,9 +10,8 @@ const brain = require("brain.js")
 const readline = require("readline");
 const fs = require("fs");
 const normalize = require('array-normalize');
-const ModelSchema  = require('../models/main/models');
 const ProgressSchema = require('../models/main/progress');
-const regression =require('regression');
+const ModelSchema  = require('../models/main/models');
 const webLogModel = require('../models/Log/webLogModel');
 const String2Float = require('../middleware/String2Float');
 const OutPutResult = require('../middleware/OutputResult');
@@ -145,13 +144,6 @@ const trainFunction=async(row,dsFolder,dsName,modelId,userId)=>{
         percent:100}})
   return({message:"train completed!",url:jsonPath})
 }
-const regStats=(stats,userId,dsName)=>{
-  const result = ProgressSchema.updateOne(
-    {userId:userId},{$set:{dataset:dsName,
-      date:Date.now(),status:stats.iterations?"training":"trained",
-      percent:stats.iterations}})
-  console.log(result)
-}
 router.get('/test-trace', async (req,res)=>{
   var i = 1,
     max = 5;
@@ -168,16 +160,7 @@ router.get('/test-trace', async (req,res)=>{
   //end the response process
   res.end();
   })
-router.get('/trace-train', async (req,res)=>{
-  const ProgressNow = await ProgressSchema.findOne({userId:req.headers["userid"]})
-  res.json({status:ProgressNow})
-})
-router.post('/ridge-train', async (req,res)=>{
-  const result =regression.linear([[0, 1], [32, 67], [12, 79]]);
-  const gradient = result.equation[0];
-  const yIntercept = result.equation[1];
-  res.json({gradient:gradient,yIntercept:yIntercept})
-})
+
 
 
 module.exports = router;
