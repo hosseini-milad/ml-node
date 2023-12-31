@@ -31,7 +31,10 @@ router.post('/webService-batch', async (req,res)=>{
       var resJson = response.data.result;
     for(var i=0;i<data.length;i++){
       data[i].predict=resJson[i].predict,
-      data[i].resultValue=resJson[i].value
+      data[i].resultValue=resJson[i].value 
+      var rand = parseInt(Math.random()*7)
+      var date = new Date()
+      data[i].date = date.setDate(date.getDate() - rand);
     }
       const logAdd= webLogModel.insertMany(data)
 

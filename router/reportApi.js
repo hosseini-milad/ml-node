@@ -80,4 +80,38 @@ router.post('/webService-batch', async (req,res)=>{
   
 })
 
+router.get('/webService-list', async (req,res)=>{
+  
+    const logWebList= await webLogModel.find({})
+    const totalToday={
+      totalRequest:404237,
+      totalUser: 154,
+      totalNewClient:12,
+      totalAttack:35
+    }
+    var weekData={
+      totalBenign:[0,0,0,0,0,0,0,0],
+      totalAttack:[0,0,0,0,0,0,0,0],
+      total:[0,0,0,0,0,0,0,0]
+    }
+    var today=new Date()
+    for(var i=0;i<logWebList.length;i++){
+      const diffTime = Math.abs(logWebList[i].date - today);
+      var index = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if(logWebList[i].predict==="Benign")
+        weekData.totalBenign[index]++
+      else weekData.totalAttack[index]++
+        weekData.total[index]++
+    }
+    res.json({result:"logWebList",weekData:weekData,
+      totalToday:totalToday})
+  try{  
+  }
+  catch(error){
+      res.status(500).json({error:error})
+  }
+  
+})
+
+
 module.exports = router;
