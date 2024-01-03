@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-const WebLogSchema = new Schema({
+const WebDataSchema = new Schema({
+    data: Object,
+    parse:Boolean,
+    user:String,
+
     url: String,
     host: String,
     agent: String,
@@ -19,6 +23,7 @@ const WebLogSchema = new Schema({
 
     predict: String,
     resultValue:String,
-    date: { type: Date , default: Date.now }   
+    date: { type: Date , default: Date.now }  ,
+    label:String
 })
-module.exports = mongoose.model('weblog',WebLogSchema);
+module.exports = mongoose.model('webdata',WebDataSchema);
