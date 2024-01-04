@@ -97,9 +97,10 @@ router.get('/webService-list', async (req,res)=>{
     }
     try{ 
     var today=new Date()
-    for(var i=1;i<logWebList.length;i++){
+    for(var i=0;i<logWebList.length;i++){
       const diffTime = Math.abs(logWebList[i].date - today);
-      var index = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      var index = Math.ceil(diffTime / (1000 * 60 * 60 * 24))-1;
+      if(index<0)continue
       if(logWebList[i].predict==="benign")
         weekData.totalBenign[index]++
       else weekData.totalAttack[index]++
