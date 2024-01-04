@@ -38,7 +38,7 @@ router.post('/webService-batch', async (req,res)=>{
     for(var i=0;i<data.length;i++){
       data[i].predict=resJson[i].predict,
       data[i].resultValue=resJson[i].value 
-      var rand = parseInt(Math.random()*7)
+      var rand = 0//parseInt(Math.random()*7)
       var date = new Date()
       data[i].date = date.setDate(date.getDate() - rand);
     }
