@@ -43,6 +43,7 @@ router.post('/web-list',jsonParser, async (req,res)=>{
     {$match:data.predict?{predict:data.predict}:{}},
     { $match:data.dateFrom?{date:{$gte:new Date(data.dateFrom)}}:{}},
     { $match:data.dateTo?{date:{$lte:new Date(data.dateTo)}}:{}},
+    { $sort: {"date":-1}},
   ]
         
   )
@@ -94,24 +95,80 @@ router.get('/webService-list', async (req,res)=>{
       totalAttack:[0,0,0,0,0,0,0,0],
       total:[0,0,0,0,0,0,0,0]
     }
+    try{ 
     var today=new Date()
     for(var i=0;i<logWebList.length;i++){
       const diffTime = Math.abs(logWebList[i].date - today);
       var index = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      if(logWebList[i].predict==="Benign")
+      if(logWebList[i].predict==="benign")
         weekData.totalBenign[index]++
       else weekData.totalAttack[index]++
         weekData.total[index]++
     }
     res.json({result:"logWebList",weekData:weekData,
       totalToday:totalToday})
-  try{  
+   
   }
   catch(error){
       res.status(500).json({error:error})
   }
   
 })
+router.post('/webService-list-report', async (req,res)=>{
+  var pageSize = req.body.pageSize?req.body.pageSize:"10";
+  var offset = req.body.offset?(parseInt(req.body.offset)*parseInt(pageSize)):0;
+  var nowDate = new Date();
 
+  const data={ 
+    orderNo:req.body.orderNo, 
+    category:req.body.category,
+    predict:req.body.predict,
+    customer:req.body.customer,
+    brand:req.body.brand,
+    dateFrom:
+        req.body.dateFrom?req.body.dateFrom[0]+"/"+
+        req.body.dateFrom[1]+"/"+req.body.dateFrom[2]+" "+"00:00":
+        new Date().toISOString().slice(0, 10)+" 00:00",
+        //new Date(nowDate.setDate(nowDate.getDate() - 1)).toISOString().slice(0, 10)+" "+"00:00",
+    dateTo:
+        req.body.dateTo?req.body.dateTo[0]+"/"+
+        req.body.dateTo[1]+"/"+req.body.dateTo[2]+" 23:59":
+        new Date().toISOString().slice(0, 10)+" 23:59",
+    pageSize:pageSize
+}
+  const nowIso=nowDate.toISOString();
+    ////console.log(nowIso)
+    const nowParse = Date.parse(nowIso);
+    const now = new Date(nowParse)
+    var now2 = new Date();
+    var now3 = new Date();
+
+    const dateFromEn = new Date(now2.setDate(now.getDate()-(data.dateFrom?data.dateFrom:1)));
+    
+    dateFromEn.setHours(0, 0, 0, 0)
+    const dateToEn = new Date(now3.setDate(now.getDate()-(data.dateTo?data.dateTo:0)));
+    
+    dateToEn.setHours(23, 59, 0, 0)
+  const logWebList= await webLogModel.aggregate([
+    { $match:data.predict?{predict:data.predict}:{}},
+    { $match:{date:{$gte:new Date(data.dateFrom)}}},
+    { $match:{date:{$lte:new Date(data.dateTo)}}},
+    { $sort: {"date":-1}},
+
+])
+const filter1Report = data.customer?
+logWebList.filter(item=>item&&item.cName&&
+    item.cName.includes(data.customer)):logWebList;
+const pageReportList = filter1Report.slice(offset,
+    (parseInt(offset)+parseInt(pageSize)))  
+  try{ 
+  res.json({filter:pageReportList,size:logWebList.length})
+ 
+}
+catch(error){
+    res.status(500).json({error:error})
+}
+
+})
 
 module.exports = router;

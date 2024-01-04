@@ -34,6 +34,7 @@ router.post('/webService-batch', async (req,res)=>{
   axios.post('http://ml.deepware.ir/api/tf/tf-test', dataToTrain)
     .then(response => {
       var resJson = response.data.result;
+      console.log(resJson)
     for(var i=0;i<data.length;i++){
       data[i].predict=resJson[i].predict,
       data[i].resultValue=resJson[i].value 
