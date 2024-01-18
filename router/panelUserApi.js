@@ -10,6 +10,7 @@ const xlsx = require('node-xlsx');
 const customer = require('../models/auth/customers');
 const user = require('../models/auth/users');
 const ParkData = require('../models/ParkData');
+const ParkGroup = require('../models/ParkGroup');
 
 
 router.post('/fetch-user',jsonParser,async (req,res)=>{
@@ -173,9 +174,9 @@ const ParseList=async(url)=>{
             __dirname +"/../"+url);
         const groupdata = workSheetsFromFile[0].data
         const data = workSheetsFromFile[1].data
-        //const reportList = await user.find()
-        var meli=[]
-        var matchError=[]
+        await ParkData.deleteMany({})
+        await ParkGroup.deleteMany({})
+
         for(var index=2;index<data.length;index++)
         {
             
@@ -189,6 +190,18 @@ const ParseList=async(url)=>{
                 group: data[index][5],
                 center:data[index][6]
             })
+
+            try{}catch{}
+        }
+        for(var index=1;index<groupdata.length;index++)
+        {
+            
+            const parkGroup = await ParkGroup.create({
+                group:groupdata[index][0],
+                subgroup:groupdata[index][1],
+                title:groupdata[index][2],
+            })
+            
             try{}catch{}
         }
        return("done")
@@ -209,15 +222,26 @@ router.post('/list-park',jsonParser,async (req,res)=>{
     }
         const reportList = await ParkData.aggregate([
             { $match:data.group?{group:data.group}:{}},
+            { $match:data.subgroup?{group:data.subgroup}:{}},
             { $match:data.center?{center:data.center}:{}},
+            {$lookup:{
+                from : "parkgroups", 
+                localField: "group", 
+                foreignField: "group", 
+                as : "groupDetail"
+            }}
         ])
+        const groupList = await ParkGroup.find({subgroup:"0"})
+        const subGroupList = data.group&&await ParkGroup.find({group:data.group})
         const filter1Report = data.customer?
         reportList.filter(item=>item&&item.cName&&
             item.cName.includes(data.customer)):reportList;
         const orderList = filter1Report.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
         const parkList = [...new Set(reportList.map((item) => item.center))];
-       res.json({filter:orderList,size:reportList.length,parkList:parkList})
+        const groupSubList = [...new Set(reportList.map((item) => item.subgroup))];
+       res.json({filter:orderList,size:reportList.length,
+        parkList:parkList,groupList:groupList,subGroupList:subGroupList})
     }
     catch(error){
         res.status(500).json({message: error.message})
