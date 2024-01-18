@@ -6,8 +6,10 @@ const auth = require("../middleware/auth");
 var ObjectID = require('mongodb').ObjectID;
 const multer = require('multer');
 const fs = require('fs');
+const xlsx = require('node-xlsx');
 const customer = require('../models/auth/customers');
 const user = require('../models/auth/users');
+const ParkData = require('../models/ParkData');
 
 
 router.post('/fetch-user',jsonParser,async (req,res)=>{
@@ -143,10 +145,11 @@ var storage = multer.diskStorage(
 
 router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
     const folderName = req.body.folderName?req.body.folderName:"temp"
-    try{
-    // to declare some path to store your converted image
-    var matches = req.body.base64image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
-    response = {};
+    
+        const data = (req.body.base64image)
+        // to declare some path to store your converted image
+        var matches = await data.match(/^data:([A-Za-z-+./]+);base64,(.+)$/),
+        response = {};
     if (matches.length !== 3) {
     return new Error('Invalid input string');
     }
@@ -154,14 +157,70 @@ router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
     response.data = new Buffer.from(matches[2], 'base64');
     let decodedImg = response;
     let imageBuffer = decodedImg.data;
-    //let type = decodedImg.type;
-    //let extension = mime.extension(type);
-    let fileName = `MGM-${Date.now().toString()+"-"+req.body.imgName}`;
+    let fileName = `ML-${Date.now().toString()+"-"+req.body.imgName}`;
    var upUrl = `/upload/${folderName}/${fileName}`
     fs.writeFileSync("."+upUrl, imageBuffer, 'utf8');
-    return res.send({"status":"success",url:upUrl});
+    
+    const parseNow = await ParseList(upUrl)
+    try{return res.send({"status":"success",url:upUrl});
     } catch (e) {
         res.send({"status":"failed",error:e});
     }
+})
+const ParseList=async(url)=>{
+     
+        const workSheetsFromFile = xlsx.parse(
+            __dirname +"/../"+url);
+        const groupdata = workSheetsFromFile[0].data
+        const data = workSheetsFromFile[1].data
+        //const reportList = await user.find()
+        var meli=[]
+        var matchError=[]
+        for(var index=2;index<data.length;index++)
+        {
+            
+            const parkAdd = await ParkData.create({
+                radif:index,
+                title:data[index][1],
+                user:data[index][2],
+
+                idea: data[index][3],
+                subgroup: data[index][4],
+                group: data[index][5],
+                center:data[index][6]
+            })
+            try{}catch{}
+        }
+       return("done")
+       try{}
+    catch(error){
+        return("fail")
+    } 
+}
+router.post('/list-park',jsonParser,async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)*parseInt(pageSize)):0;
+    try{const data={
+        orderNo:req.body.orderNo,
+        status:req.body.status,
+        group:req.body.group,
+        center:req.body.center,
+        subgroup:req.body.subgroup,
+    }
+        const reportList = await ParkData.aggregate([
+            { $match:data.group?{group:data.group}:{}},
+            { $match:data.center?{center:data.center}:{}},
+        ])
+        const filter1Report = data.customer?
+        reportList.filter(item=>item&&item.cName&&
+            item.cName.includes(data.customer)):reportList;
+        const orderList = filter1Report.slice(offset,
+            (parseInt(offset)+parseInt(pageSize)))  
+        const parkList = [...new Set(reportList.map((item) => item.center))];
+       res.json({filter:orderList,size:reportList.length,parkList:parkList})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
 })
 module.exports = router;

@@ -162,4 +162,17 @@ router.get('/test-trace', async (req,res)=>{
 
 
 
+  router.post('/park-data', async (req,res)=>{
+    const parkData = req.body.parkData
+    try{
+      const networkState = JSON.parse(fs.readFileSync(req.body.datasetUrl, "utf-8"));
+      
+      res.status(200).json({testResult: testResult})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+    })
+    
+
 module.exports = router;
