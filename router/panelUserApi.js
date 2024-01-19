@@ -232,7 +232,7 @@ router.post('/list-park',jsonParser,async (req,res)=>{
             }}
         ])
         const groupList = await ParkGroup.find({subgroup:"0"})
-        const subGroupList = data.group&&await ParkGroup.find({group:data.group})
+        const subGroupList = data.group?await ParkGroup.find({group:data.group}):'';
         const filter1Report = data.customer?
         reportList.filter(item=>item&&item.cName&&
             item.cName.includes(data.customer)):reportList;
@@ -244,11 +244,11 @@ router.post('/list-park',jsonParser,async (req,res)=>{
         await calcChartCenter(reportList,groupList,subGroupList,
             data.center,data.group):
         await calcChart(reportList,parkList,groupList,subGroupList,data.group,data.subgroup)
-        
+        const chartSub = await calcSubGroup(reportList,subGroupList)
         const groupSubList = [...new Set(reportList.map((item) => item.subgroup))];
        res.json({filter:orderList,size:reportList.length,
         parkList:parkList,groupList:groupList,subGroupList:subGroupList,
-        ...chartData
+        ...chartData,subChart:chartSub
     })
     }
     catch(error){
@@ -297,5 +297,21 @@ const calcChartCenter=async(data,groupList,subGroupList,center,group)=>{
     }
     return({chartLabel:chartLabel.map(item=>item.title),
         chartData:chartData,title:title})
+}
+const calcSubGroup=async(data,subgroup)=>{
+    var totalSub = await ParkGroup.find({})
+    var title = "نمودار زیرگروه ها"
+    var subgroupTemp = totalSub
+    var chartData=new Array(subgroupTemp.length).fill(0)
+    for(var i=0;i<data.length;i++){
+        for(var j=0;j<subgroupTemp.length;j++)
+            if(subgroupTemp[j])
+                if(subgroupTemp[j].group === data[i].group&&
+                    subgroupTemp[j].subgroup === data[i].subgroup ){
+                    chartData[j]++
+                break;
+            }
+    }
+    return({subChartData:chartData,subChartLabel:subgroupTemp.map(item=>item.title)})
 }
 module.exports = router;
