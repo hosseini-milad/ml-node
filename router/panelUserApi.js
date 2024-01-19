@@ -222,7 +222,7 @@ router.post('/list-park',jsonParser,async (req,res)=>{
     }
         const reportList = await ParkData.aggregate([
             { $match:data.group?{group:data.group}:{}},
-            { $match:data.subgroup?{group:data.subgroup}:{}},
+            { $match:data.subgroup?{subgroup:data.subgroup}:{}},
             { $match:data.center?{center:data.center}:{}},
             {$lookup:{
                 from : "parkgroups", 
@@ -238,13 +238,64 @@ router.post('/list-park',jsonParser,async (req,res)=>{
             item.cName.includes(data.customer)):reportList;
         const orderList = filter1Report.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
+        
         const parkList = [...new Set(reportList.map((item) => item.center))];
+        const chartData = data.center?
+        await calcChartCenter(reportList,groupList,subGroupList,
+            data.center,data.group):
+        await calcChart(reportList,parkList,groupList,subGroupList,data.group,data.subgroup)
+        
         const groupSubList = [...new Set(reportList.map((item) => item.subgroup))];
        res.json({filter:orderList,size:reportList.length,
-        parkList:parkList,groupList:groupList,subGroupList:subGroupList})
+        parkList:parkList,groupList:groupList,subGroupList:subGroupList,
+        ...chartData
+    })
     }
     catch(error){
         res.status(500).json({message: error.message})
     } 
 })
+const calcChart=async(data,parkList,groupList,subGroupList,group,subgroup)=>{
+    
+    var chartLabel=parkList
+    var groupName = group&&groupList.find(item=>item.group===group)
+    var subgroupName = subgroup&&subGroupList.find(item=>item.subgroup===subgroup)
+    
+    var title = "نمودار " + (groupName?groupName.title:'')
+    if(subgroup) title+= " - زیرگروه " + (subgroupName?subgroupName.title:'')
+    var chartData=new Array(parkList.length).fill(0)
+    for(var i=0;i<data.length;i++){
+        for(var j=0;j<chartLabel.length;j++)
+            if(chartLabel[j]&&(chartLabel[j] === data[i].center)){
+                chartData[j]++
+                break;
+            }
+    }
+    return({chartLabel:chartLabel,chartData:chartData,title:title})
+}
+const calcChartCenter=async(data,groupList,subGroupList,center,group)=>{
+    
+    var chartLabel=subGroupList?subGroupList:groupList
+    var chartData=new Array(chartLabel.length).fill(0)
+    var title = " نمودار "+center+" - ";
+    if(subGroupList) title += groupList.find(item=>item.group===group).title
+    
+    for(var i=0;i<data.length;i++){
+        for(var j=0;j<chartLabel.length;j++)
+            if(chartLabel[j]){
+                if(subGroupList){
+                    if(chartLabel[j].subgroup === data[i].subgroup){
+                    chartData[j]++
+                    break;
+                    }
+                }
+                else if(chartLabel[j].group === data[i].group){
+                    chartData[j]++
+                    break;
+                }
+            }
+    }
+    return({chartLabel:chartLabel.map(item=>item.title),
+        chartData:chartData,title:title})
+}
 module.exports = router;
